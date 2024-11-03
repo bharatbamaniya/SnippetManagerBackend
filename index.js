@@ -16,7 +16,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
 // ## ----------- APP CONFIGURATION BEGINS HERE ----------- ## //
-// app.use(serverConfigMiddleware.restrictHttpHostHeaderInjection);
+app.use(serverConfigMiddleware.restrictHttpHostHeaderInjection);
 app.use(serverConfigMiddleware.corsMiddleware());
 app.use(serverConfigMiddleware.setMandatoryHeaders);
 app.use(serverConfigMiddleware.restrictHttpOptionRequest);

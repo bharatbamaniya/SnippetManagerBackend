@@ -31,7 +31,7 @@ const isSnippetExist = async (id) => {
 
 const getAllSnippets = async () => {
     try {
-        const snippets = await Snippet.find({}, null, null).sort({createdAt: -1});
+        const snippets = await Snippet.find({isDeleted: false}, null, null).sort({createdAt: -1});
 
         if (snippets.length) return snippets;
 
@@ -88,9 +88,9 @@ const deleteSnippetById = async (id) => {
     try {
         const result = await deleteSnippet(id);
 
-        if (result && result.deletedCount && result.deleteStatus === "permanent") {
+        if (result && result.deletedCount && result.deletedStatus === "permanent") {
             return {isDeleted: true, isPermanent: true};
-        } else if (result && result.deletedCount && result.deleteStatus === "softDelete") {
+        } else if (result && result.deletedCount && result.deletedStatus === "softDelete") {
             return {isDeleted: true, isPermanent: false};
         } else {
             return {isDeleted: false, isPermanent: false};

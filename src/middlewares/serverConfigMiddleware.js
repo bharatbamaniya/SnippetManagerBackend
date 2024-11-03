@@ -24,12 +24,12 @@ const restrictHttpHostHeaderInjection = (req, res, next) => {
         `# Request from  ##  ${req.headers["x-forwarded-for"] || req.socket.remoteAddress} # WAF NAT IP ## ${req.ip}  # at ${new Date().toJSON()} # to  ${req.originalUrl}`
     );
 
-    if (req.hostname !== hostName && req.hostname !== "localhost") {
-        logger.warn("Invalid Host :: " + req.hostname + " on " + hostName);
-        res.status(400).send("Request Not Allowed as Host is invalid");
-    } else {
+    // if (req.hostname !== hostName && req.hostname !== "localhost") {
+    //     logger.warn("Invalid Host :: " + req.hostname + " on " + hostName);
+    //     res.status(400).send("Request Not Allowed as Host is invalid");
+    // } else {
         next();
-    }
+    // }
 };
 
 const restrictHttpOptionRequest = (req, res, next) => {
