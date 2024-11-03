@@ -7,7 +7,10 @@ import {serverConfigMiddleware} from "./src/middlewares/serverConfigMiddleware.j
 import {loggerMiddleware} from "./src/utils/logger.js";
 // import routes
 import routes from "./src/routes.js";
+import connectDB from "./src/db/dbConnection.js";
+import dotenv from "dotenv";
 
+dotenv.config({ path: "./.env" });
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
@@ -42,6 +45,12 @@ const PORT = process.env.PORT || 8080;
 // import { app } from "./app.js";
 
 
-app.listen(PORT, function () {
-    console.log("Server is listening on port ", PORT);
-});
+connectDB()
+    .then(() => {
+        app.listen(PORT, () => {
+            console.log(`⚙️ Server is running at port : ${PORT}`);
+        })
+    })
+    .catch((err) => {
+        console.log("MONGO db connection failed !!! ", err);
+    });
