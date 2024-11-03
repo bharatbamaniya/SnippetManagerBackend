@@ -34,7 +34,7 @@ const logger = createLogger({
         new transports.Console({
             format: consoleLogFormat,
         }),
-        new transports.File({ filename: `./logs/msn_${process.env.NODE_ENV}.log` }),
+        new transports.File({ filename: `./logs/snippet-manager-${process.env.NODE_ENV}.log` }),
     ],
 });
 
