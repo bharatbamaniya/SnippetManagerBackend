@@ -1,25 +1,3 @@
-import jwt from "jsonwebtoken";
-import { config } from "../config/config.js";
-
-/**
- * @param userId
- * @returns {string}
- */
-export function generateJwt(userId) {
-    const payload = {
-        userId,
-    };
-    return jwt.sign(payload, config.JWT_SECRET, { expiresIn: "4h" });
-}
-
-/**
- * @param jwtToken {string}
- * @returns {*}
- */
-export function decodeJwt(jwtToken) {
-    return jwt.verify(jwtToken, config.JWT_SECRET);
-}
-
 /**
  * @param utcDate {number}
  * @returns {Date}

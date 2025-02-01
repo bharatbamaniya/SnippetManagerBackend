@@ -1,6 +1,6 @@
-import { decodeJwt } from "../utils/utils.js";
 import apiError from "../utils/apiError.js";
 import TokenExpiredError from "jsonwebtoken/lib/TokenExpiredError.js";
+import {verifyToken} from "../utils/jwtService.js";
 
 export const jwtAuthMiddleware = (req, res, next) => {
     try {
@@ -10,14 +10,14 @@ export const jwtAuthMiddleware = (req, res, next) => {
             return res.status(401).send(apiError(401, "Unauthorized request, token not found!"));
         }
 
-        const token = authorizationHeader.split(" ")[1]; // Remove "Bearer"
-        const payload = decodeJwt(token);
+        const token = authorizationHeader && authorizationHeader.replace("Bearer ", ""); // Remove "Bearer"
+        const payload = verifyToken(token);
 
-        if (!payload || !payload.userId) {
+        if (!payload || !payload._id) {
             return res.status(401).send(apiError(401, "Unauthorized request, User id not found in token!"));
         }
 
-        req.userId = payload.userId;
+        req.user = {_id: payload._id};
         next();
     } catch (error) {
         if (error instanceof TokenExpiredError) {
