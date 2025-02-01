@@ -64,20 +64,17 @@ paymentRouter.post('/webhook', async (req, res) => {
             webhookSignature,
             webhookSecret
         );
-        console.log('is valid', isWebhookValid)
 
         if (!isWebhookValid) {
             return res.status(400).send({message: 'Invalid webhook'})
         }
 
         const orderId = webhookBody.payload.payment.entity.order_id;
-        const status = webhookBody.payload.payload.entity.status;
+        const status = webhookBody.payload.payment.entity.status;
 
-        console.log('orderId', orderId, 'status', status);
         const payment = await Payment.findOne({orderId}).exec();
         payment.status = status;
 
-        console.log('payment', payment)
         await payment.save();
 
         return res.status(200).send({message: 'Webhook call completed successfully'})
